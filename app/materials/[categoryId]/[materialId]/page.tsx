@@ -56,7 +56,7 @@ export default async function MaterialDetail({ params }: { params: Params }) {
       <JsonLd data={matJsonLd} />
 
       {/* Datasheet Container */}
-      <div className="max-w-7xl mx-auto w-full px-4 sm:px-6">
+      <div className="max-w-[1600px] mx-auto w-full px-4 sm:px-6">
         <div className="bg-[#FFFFFF] border-2 border-neutral-800 shadow-xl overflow-hidden flex flex-col">
           
           {/* Header Block (Brochure Style) */}
@@ -140,11 +140,11 @@ export default async function MaterialDetail({ params }: { params: Params }) {
                 <div className="bg-[#09090B] text-white px-4 py-2 font-['DM_Mono'] text-sm md:text-base font-bold uppercase tracking-widest text-center">
                   Available Forms / Visual Assets
                 </div>
-                <div className="p-4 bg-neutral-100 flex-1 grid grid-cols-1 sm:grid-cols-2 gap-4 overflow-y-auto max-h-[800px] scrollbar-hide">
+                <div className="p-4 bg-neutral-100 flex-1 grid grid-cols-1 sm:grid-cols-2 gap-4 overflow-y-auto max-h-[800px] scrollbar-hide content-start">
                   {material.imageKeys && material.imageKeys.length > 0 ? (
                     material.imageKeys.map((key, idx) => (
                       <div key={key} className="border-2 border-neutral-300 bg-[#FFFFFF] p-2 hover:border-[#10B981] transition-colors group">
-                        <div className="aspect-[4/3] relative overflow-hidden bg-white flex items-center justify-center">
+                        <div className="relative overflow-hidden bg-white flex items-center justify-center w-full min-h-[150px] max-h-[300px]">
                           <img 
                             src={`https://pub-723d911c6a3442c78b2f69b731577d2b.r2.dev/${key}`} 
                             alt={`${material.name} form ${idx+1}`} 
