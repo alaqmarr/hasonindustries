@@ -91,7 +91,7 @@ export default async function ProductDetailPage({ params }: { params: Params }) 
           <div className="flex flex-col lg:flex-row p-4 md:p-6 gap-6">
             
             {/* Left Column (About & Specs) */}
-            <div className="flex-[3] flex flex-col gap-6">
+            <div className="flex-[3] flex flex-col gap-6 min-w-0">
               
               {/* About Section */}
               <div className="border border-neutral-800 flex flex-col">
@@ -138,12 +138,12 @@ export default async function ProductDetailPage({ params }: { params: Params }) 
             </div>
 
             {/* Right Column (Images) */}
-            <div className="flex-[2] flex flex-col gap-6">
+            <div className="flex-[2] flex flex-col gap-6 min-w-0">
               <div className="border border-neutral-800 flex flex-col h-full">
                 <div className="bg-[#09090B] text-white px-4 py-2 font-['DM_Mono'] text-sm md:text-base font-bold uppercase tracking-widest text-center">
                   Visual Assets / Product Forms
                 </div>
-                <div className="p-4 bg-neutral-100 flex-1 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-1 gap-4 overflow-y-auto max-h-[800px] scrollbar-hide">
+                <div className="p-4 bg-neutral-100 flex-1 grid grid-cols-1 sm:grid-cols-2 gap-4 overflow-y-auto max-h-[800px] scrollbar-hide">
                   {product.imageKeys && product.imageKeys.length > 0 ? (
                     product.imageKeys.map((key, idx) => (
                       <div key={key} className="border-2 border-neutral-300 bg-[#FFFFFF] p-2 hover:border-[#10B981] transition-colors group">
