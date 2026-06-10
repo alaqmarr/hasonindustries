@@ -20,8 +20,18 @@ export type MaterialModel = runtime.Types.Result.DefaultSelection<Prisma.$Materi
 
 export type AggregateMaterial = {
   _count: MaterialCountAggregateOutputType | null
+  _avg: MaterialAvgAggregateOutputType | null
+  _sum: MaterialSumAggregateOutputType | null
   _min: MaterialMinAggregateOutputType | null
   _max: MaterialMaxAggregateOutputType | null
+}
+
+export type MaterialAvgAggregateOutputType = {
+  order: number | null
+}
+
+export type MaterialSumAggregateOutputType = {
+  order: number | null
 }
 
 export type MaterialMinAggregateOutputType = {
@@ -31,6 +41,7 @@ export type MaterialMinAggregateOutputType = {
   category: string | null
   categoryId: string | null
   description: string | null
+  order: number | null
   createdAt: Date | null
   updatedAt: Date | null
 }
@@ -42,6 +53,7 @@ export type MaterialMaxAggregateOutputType = {
   category: string | null
   categoryId: string | null
   description: string | null
+  order: number | null
   createdAt: Date | null
   updatedAt: Date | null
 }
@@ -55,11 +67,20 @@ export type MaterialCountAggregateOutputType = {
   description: number
   specs: number
   imageKeys: number
+  order: number
   createdAt: number
   updatedAt: number
   _all: number
 }
 
+
+export type MaterialAvgAggregateInputType = {
+  order?: true
+}
+
+export type MaterialSumAggregateInputType = {
+  order?: true
+}
 
 export type MaterialMinAggregateInputType = {
   id?: true
@@ -68,6 +89,7 @@ export type MaterialMinAggregateInputType = {
   category?: true
   categoryId?: true
   description?: true
+  order?: true
   createdAt?: true
   updatedAt?: true
 }
@@ -79,6 +101,7 @@ export type MaterialMaxAggregateInputType = {
   category?: true
   categoryId?: true
   description?: true
+  order?: true
   createdAt?: true
   updatedAt?: true
 }
@@ -92,6 +115,7 @@ export type MaterialCountAggregateInputType = {
   description?: true
   specs?: true
   imageKeys?: true
+  order?: true
   createdAt?: true
   updatedAt?: true
   _all?: true
@@ -135,6 +159,18 @@ export type MaterialAggregateArgs<ExtArgs extends runtime.Types.Extensions.Inter
   /**
    * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
    * 
+   * Select which fields to average
+  **/
+  _avg?: MaterialAvgAggregateInputType
+  /**
+   * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+   * 
+   * Select which fields to sum
+  **/
+  _sum?: MaterialSumAggregateInputType
+  /**
+   * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+   * 
    * Select which fields to find the minimum value
   **/
   _min?: MaterialMinAggregateInputType
@@ -165,6 +201,8 @@ export type MaterialGroupByArgs<ExtArgs extends runtime.Types.Extensions.Interna
   take?: number
   skip?: number
   _count?: MaterialCountAggregateInputType | true
+  _avg?: MaterialAvgAggregateInputType
+  _sum?: MaterialSumAggregateInputType
   _min?: MaterialMinAggregateInputType
   _max?: MaterialMaxAggregateInputType
 }
@@ -178,9 +216,12 @@ export type MaterialGroupByOutputType = {
   description: string | null
   specs: runtime.JsonValue | null
   imageKeys: string[]
+  order: number
   createdAt: Date
   updatedAt: Date
   _count: MaterialCountAggregateOutputType | null
+  _avg: MaterialAvgAggregateOutputType | null
+  _sum: MaterialSumAggregateOutputType | null
   _min: MaterialMinAggregateOutputType | null
   _max: MaterialMaxAggregateOutputType | null
 }
@@ -212,6 +253,7 @@ export type MaterialWhereInput = {
   description?: Prisma.StringNullableFilter<"Material"> | string | null
   specs?: Prisma.JsonNullableFilter<"Material">
   imageKeys?: Prisma.StringNullableListFilter<"Material">
+  order?: Prisma.IntFilter<"Material"> | number
   createdAt?: Prisma.DateTimeFilter<"Material"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Material"> | Date | string
   parentCat?: Prisma.XOR<Prisma.MaterialCategoryNullableScalarRelationFilter, Prisma.MaterialCategoryWhereInput> | null
@@ -226,6 +268,7 @@ export type MaterialOrderByWithRelationInput = {
   description?: Prisma.SortOrderInput | Prisma.SortOrder
   specs?: Prisma.SortOrderInput | Prisma.SortOrder
   imageKeys?: Prisma.SortOrder
+  order?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   parentCat?: Prisma.MaterialCategoryOrderByWithRelationInput
@@ -243,6 +286,7 @@ export type MaterialWhereUniqueInput = Prisma.AtLeast<{
   description?: Prisma.StringNullableFilter<"Material"> | string | null
   specs?: Prisma.JsonNullableFilter<"Material">
   imageKeys?: Prisma.StringNullableListFilter<"Material">
+  order?: Prisma.IntFilter<"Material"> | number
   createdAt?: Prisma.DateTimeFilter<"Material"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Material"> | Date | string
   parentCat?: Prisma.XOR<Prisma.MaterialCategoryNullableScalarRelationFilter, Prisma.MaterialCategoryWhereInput> | null
@@ -257,11 +301,14 @@ export type MaterialOrderByWithAggregationInput = {
   description?: Prisma.SortOrderInput | Prisma.SortOrder
   specs?: Prisma.SortOrderInput | Prisma.SortOrder
   imageKeys?: Prisma.SortOrder
+  order?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   _count?: Prisma.MaterialCountOrderByAggregateInput
+  _avg?: Prisma.MaterialAvgOrderByAggregateInput
   _max?: Prisma.MaterialMaxOrderByAggregateInput
   _min?: Prisma.MaterialMinOrderByAggregateInput
+  _sum?: Prisma.MaterialSumOrderByAggregateInput
 }
 
 export type MaterialScalarWhereWithAggregatesInput = {
@@ -276,6 +323,7 @@ export type MaterialScalarWhereWithAggregatesInput = {
   description?: Prisma.StringNullableWithAggregatesFilter<"Material"> | string | null
   specs?: Prisma.JsonNullableWithAggregatesFilter<"Material">
   imageKeys?: Prisma.StringNullableListFilter<"Material">
+  order?: Prisma.IntWithAggregatesFilter<"Material"> | number
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"Material"> | Date | string
   updatedAt?: Prisma.DateTimeWithAggregatesFilter<"Material"> | Date | string
 }
@@ -288,6 +336,7 @@ export type MaterialCreateInput = {
   description?: string | null
   specs?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   imageKeys?: Prisma.MaterialCreateimageKeysInput | string[]
+  order?: number
   createdAt?: Date | string
   updatedAt?: Date | string
   parentCat?: Prisma.MaterialCategoryCreateNestedOneWithoutMaterialsInput
@@ -302,6 +351,7 @@ export type MaterialUncheckedCreateInput = {
   description?: string | null
   specs?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   imageKeys?: Prisma.MaterialCreateimageKeysInput | string[]
+  order?: number
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -314,6 +364,7 @@ export type MaterialUpdateInput = {
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   specs?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   imageKeys?: Prisma.MaterialUpdateimageKeysInput | string[]
+  order?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   parentCat?: Prisma.MaterialCategoryUpdateOneWithoutMaterialsNestedInput
@@ -328,6 +379,7 @@ export type MaterialUncheckedUpdateInput = {
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   specs?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   imageKeys?: Prisma.MaterialUpdateimageKeysInput | string[]
+  order?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -341,6 +393,7 @@ export type MaterialCreateManyInput = {
   description?: string | null
   specs?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   imageKeys?: Prisma.MaterialCreateimageKeysInput | string[]
+  order?: number
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -353,6 +406,7 @@ export type MaterialUpdateManyMutationInput = {
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   specs?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   imageKeys?: Prisma.MaterialUpdateimageKeysInput | string[]
+  order?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -366,6 +420,7 @@ export type MaterialUncheckedUpdateManyInput = {
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   specs?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   imageKeys?: Prisma.MaterialUpdateimageKeysInput | string[]
+  order?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -389,8 +444,13 @@ export type MaterialCountOrderByAggregateInput = {
   description?: Prisma.SortOrder
   specs?: Prisma.SortOrder
   imageKeys?: Prisma.SortOrder
+  order?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+}
+
+export type MaterialAvgOrderByAggregateInput = {
+  order?: Prisma.SortOrder
 }
 
 export type MaterialMaxOrderByAggregateInput = {
@@ -400,6 +460,7 @@ export type MaterialMaxOrderByAggregateInput = {
   category?: Prisma.SortOrder
   categoryId?: Prisma.SortOrder
   description?: Prisma.SortOrder
+  order?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
@@ -411,8 +472,13 @@ export type MaterialMinOrderByAggregateInput = {
   category?: Prisma.SortOrder
   categoryId?: Prisma.SortOrder
   description?: Prisma.SortOrder
+  order?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+}
+
+export type MaterialSumOrderByAggregateInput = {
+  order?: Prisma.SortOrder
 }
 
 export type MaterialCreateNestedManyWithoutParentCatInput = {
@@ -474,6 +540,7 @@ export type MaterialCreateWithoutParentCatInput = {
   description?: string | null
   specs?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   imageKeys?: Prisma.MaterialCreateimageKeysInput | string[]
+  order?: number
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -486,6 +553,7 @@ export type MaterialUncheckedCreateWithoutParentCatInput = {
   description?: string | null
   specs?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   imageKeys?: Prisma.MaterialCreateimageKeysInput | string[]
+  order?: number
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -528,6 +596,7 @@ export type MaterialScalarWhereInput = {
   description?: Prisma.StringNullableFilter<"Material"> | string | null
   specs?: Prisma.JsonNullableFilter<"Material">
   imageKeys?: Prisma.StringNullableListFilter<"Material">
+  order?: Prisma.IntFilter<"Material"> | number
   createdAt?: Prisma.DateTimeFilter<"Material"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Material"> | Date | string
 }
@@ -540,6 +609,7 @@ export type MaterialCreateManyParentCatInput = {
   description?: string | null
   specs?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   imageKeys?: Prisma.MaterialCreateimageKeysInput | string[]
+  order?: number
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -552,6 +622,7 @@ export type MaterialUpdateWithoutParentCatInput = {
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   specs?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   imageKeys?: Prisma.MaterialUpdateimageKeysInput | string[]
+  order?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -564,6 +635,7 @@ export type MaterialUncheckedUpdateWithoutParentCatInput = {
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   specs?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   imageKeys?: Prisma.MaterialUpdateimageKeysInput | string[]
+  order?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -576,6 +648,7 @@ export type MaterialUncheckedUpdateManyWithoutParentCatInput = {
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   specs?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   imageKeys?: Prisma.MaterialUpdateimageKeysInput | string[]
+  order?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -591,6 +664,7 @@ export type MaterialSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs
   description?: boolean
   specs?: boolean
   imageKeys?: boolean
+  order?: boolean
   createdAt?: boolean
   updatedAt?: boolean
   parentCat?: boolean | Prisma.Material$parentCatArgs<ExtArgs>
@@ -605,6 +679,7 @@ export type MaterialSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Exte
   description?: boolean
   specs?: boolean
   imageKeys?: boolean
+  order?: boolean
   createdAt?: boolean
   updatedAt?: boolean
   parentCat?: boolean | Prisma.Material$parentCatArgs<ExtArgs>
@@ -619,6 +694,7 @@ export type MaterialSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Exte
   description?: boolean
   specs?: boolean
   imageKeys?: boolean
+  order?: boolean
   createdAt?: boolean
   updatedAt?: boolean
   parentCat?: boolean | Prisma.Material$parentCatArgs<ExtArgs>
@@ -633,11 +709,12 @@ export type MaterialSelectScalar = {
   description?: boolean
   specs?: boolean
   imageKeys?: boolean
+  order?: boolean
   createdAt?: boolean
   updatedAt?: boolean
 }
 
-export type MaterialOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "name" | "slug" | "category" | "categoryId" | "description" | "specs" | "imageKeys" | "createdAt" | "updatedAt", ExtArgs["result"]["material"]>
+export type MaterialOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "name" | "slug" | "category" | "categoryId" | "description" | "specs" | "imageKeys" | "order" | "createdAt" | "updatedAt", ExtArgs["result"]["material"]>
 export type MaterialInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   parentCat?: boolean | Prisma.Material$parentCatArgs<ExtArgs>
 }
@@ -662,6 +739,7 @@ export type $MaterialPayload<ExtArgs extends runtime.Types.Extensions.InternalAr
     description: string | null
     specs: runtime.JsonValue | null
     imageKeys: string[]
+    order: number
     createdAt: Date
     updatedAt: Date
   }, ExtArgs["result"]["material"]>
@@ -1096,6 +1174,7 @@ export interface MaterialFieldRefs {
   readonly description: Prisma.FieldRef<"Material", 'String'>
   readonly specs: Prisma.FieldRef<"Material", 'Json'>
   readonly imageKeys: Prisma.FieldRef<"Material", 'String[]'>
+  readonly order: Prisma.FieldRef<"Material", 'Int'>
   readonly createdAt: Prisma.FieldRef<"Material", 'DateTime'>
   readonly updatedAt: Prisma.FieldRef<"Material", 'DateTime'>
 }

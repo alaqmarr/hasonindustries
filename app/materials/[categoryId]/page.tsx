@@ -38,7 +38,10 @@ export default async function MaterialCategoryPage({ params }: { params: Params 
             ? { categoryId: null }
             : { parentCat: { slug: categoryId } },
         include: { parentCat: true },
-        orderBy: { createdAt: "desc" }
+        orderBy: [
+            { order: "asc" },
+            { createdAt: "desc" }
+        ]
     })
 
     // We only have one category group to show on this page

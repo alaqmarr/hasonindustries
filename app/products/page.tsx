@@ -15,7 +15,10 @@ export const metadata: Metadata = {
 export default async function ProductsPage() {
   const products = await prisma.product.findMany({
     include: { parentCat: true },
-    orderBy: { createdAt: 'desc' }
+    orderBy: [
+      { order: 'asc' },
+      { createdAt: 'desc' }
+    ]
   })
 
   const dbCategories = await prisma.productCategory.findMany({
@@ -26,6 +29,14 @@ export default async function ProductsPage() {
     { id: "", label: "All Assets" },
     ...dbCategories.map(c => ({ id: c.slug, label: c.name }))
   ]
+
+  // Group by category
+  const grouped: Record<string, typeof products> = {}
+  products.forEach(p => {
+    const catName = p.parentCat?.name || "Uncategorized"
+    if (!grouped[catName]) grouped[catName] = []
+    grouped[catName].push(p)
+  })
 
   return (
     <div className="flex flex-col min-h-screen">
@@ -65,38 +76,43 @@ export default async function ProductsPage() {
           </nav>
         </aside>
 
-        {/* Product Grid */}
-        <div className="flex-1 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+        {/* Product Groups */}
+        <div className="flex-1 space-y-16 md:space-y-24">
           {products.length === 0 ? (
-            <div className="col-span-full py-24 flex items-center justify-center border border-neutral-200 text-[#52525B] font-['DM_Mono'] text-sm tracking-widest uppercase bg-[#FFFFFF]">
+            <div className="py-24 flex items-center justify-center border border-neutral-200 text-[#52525B] font-['DM_Mono'] text-sm tracking-widest uppercase bg-[#FFFFFF]">
               No components match the selected parameters.
             </div>
           ) : (
-            products.map((product) => (
-              <Link
-                href={`/products/${product.parentCat?.slug || "uncategorized"}/${product.slug}`}
-                key={product.id}
-                className="group border border-neutral-200 bg-[#FFFFFF] flex flex-col hover:border-[#10B981] transition-colors relative"
-              >
-                <div className="aspect-square bg-[#FAFAFA] relative overflow-hidden flex items-center justify-center p-4">
-                  {product.imageKeys && product.imageKeys.length > 0 ? (
-                    <div className="w-full h-full text-center text-[#52525B] font-['DM_Mono'] text-[8px] flex items-center justify-center p-2 break-all opacity-30 group-hover:opacity-100 transition-opacity">
-                      Linked R2 Asset: <br />{product.imageKeys[0]}
-                    </div>
-                  ) : (
-                    <div className="text-[#52525B] font-['DM_Mono'] text-[10px] uppercase border border-neutral-200 p-2">No Visual Asset</div>
-                  )}
-                  <div className="absolute inset-0 bg-[#10B981] opacity-0 group-hover:opacity-[0.05] transition-opacity duration-500 pointer-events-none" />
-                </div>
+            Object.entries(grouped).map(([category, items]) => (
+              <section key={category}>
+                <h2 className="text-2xl md:text-3xl font-['Bebas_Neue'] text-[#10B981] mb-6 md:mb-8 border-b border-neutral-200 pb-3 md:pb-4">{category}</h2>
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+                  {items.map((product) => (
+                    <Link
+                      href={`/products/${product.parentCat?.slug || "uncategorized"}/${product.slug}`}
+                      key={product.id}
+                      className="group border border-neutral-200 bg-[#FFFFFF] flex flex-col hover:border-[#10B981] transition-colors relative"
+                    >
+                      <div className="aspect-square bg-[#FAFAFA] relative overflow-hidden flex items-center justify-center p-4">
+                        {product.imageKeys && product.imageKeys.length > 0 ? (
+                          <img src={`https://pub-723d911c6a3442c78b2f69b731577d2b.r2.dev/${product.imageKeys[0]}`} alt={product.name} className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" />
+                        ) : (
+                          <div className="text-[#52525B] font-['DM_Mono'] text-[10px] uppercase border border-neutral-200 p-2">No Visual Asset</div>
+                        )}
+                        <div className="absolute inset-0 bg-[#10B981] opacity-0 group-hover:opacity-[0.05] transition-opacity duration-500 pointer-events-none" />
+                      </div>
 
-                <div className="p-6 flex flex-col border-t border-neutral-200 group-hover:border-[#10B981] transition-colors">
-                  <p className="font-['DM_Mono'] text-[10px] text-[#10B981] uppercase tracking-widest mb-3">{product.parentCat?.name || "Uncategorized"}</p>
-                  <h2 className="font-['Bebas_Neue'] text-3xl tracking-widest text-[#09090B] mb-2">{product.name}</h2>
-                  <div className="font-['DM_Mono'] text-[10px] text-[#52525B] uppercase tracking-widest mt-6 flex items-center gap-2">
-                    Inspect Blueprint <span className="transform group-hover:translate-x-1 transition-transform">→</span>
-                  </div>
+                      <div className="p-6 flex flex-col border-t border-neutral-200 group-hover:border-[#10B981] transition-colors">
+                        <p className="font-['DM_Mono'] text-[10px] text-[#10B981] uppercase tracking-widest mb-3">{product.parentCat?.name || "Uncategorized"}</p>
+                        <h2 className="font-['Bebas_Neue'] text-3xl tracking-widest text-[#09090B] mb-2">{product.name}</h2>
+                        <div className="font-['DM_Mono'] text-[10px] text-[#52525B] uppercase tracking-widest mt-6 flex items-center gap-2">
+                          Inspect Blueprint <span className="transform group-hover:translate-x-1 transition-transform">→</span>
+                        </div>
+                      </div>
+                    </Link>
+                  ))}
                 </div>
-              </Link>
+              </section>
             ))
           )}
         </div>

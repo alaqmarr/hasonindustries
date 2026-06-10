@@ -10,7 +10,10 @@ export async function Navbar() {
     include: {
       materials: {
         select: { name: true, slug: true },
-        orderBy: { name: "asc" }
+        orderBy: [
+          { order: "asc" },
+          { name: "asc" }
+        ]
       }
     }
   })

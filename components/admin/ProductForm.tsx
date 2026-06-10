@@ -289,7 +289,7 @@ export function ProductForm({ initialData = null }: { initialData?: any }) {
           <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4">
             {existingImages.map((key) => (
               <div key={key} className="relative group aspect-square bg-neutral-100 border border-neutral-200">
-                <img src={`https://pub-${process.env.NEXT_PUBLIC_R2_PUBLIC_KEY}.r2.dev/${key}`} alt="product" className="w-full h-full object-cover" />
+                <img src={`https://pub-723d911c6a3442c78b2f69b731577d2b.r2.dev/${key}`} alt="product" className="w-full h-full object-cover" />
                 <button type="button" onClick={() => removeExistingImage(key)} className="absolute top-2 right-2 bg-rose-500 text-white p-1 opacity-0 group-hover:opacity-100 transition-opacity">
                   <X className="w-4 h-4" />
                 </button>

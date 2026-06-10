@@ -1,13 +1,17 @@
 import { prisma } from "@/lib/db"
 import Link from "next/link"
 import { revalidatePath } from "next/cache"
+import { MaterialListClient } from "./MaterialListClient"
 
 export const dynamic = "force-dynamic"
 
 export default async function AdminMaterialsIndex() {
   const materials = await prisma.material.findMany({
     include: { parentCat: true },
-    orderBy: { name: "asc" }
+    orderBy: [
+      { order: "asc" },
+      { createdAt: "desc" }
+    ]
   })
 
   async function deleteMaterial(formData: FormData) {
@@ -15,7 +19,25 @@ export default async function AdminMaterialsIndex() {
     await prisma.material.delete({
       where: { id: formData.get("id") as string }
     })
-    revalidatePath("/", "layout")
+    revalidatePath("/admin/materials")
+  }
+
+  async function updateOrder(formData: FormData) {
+    "use server"
+    const id = formData.get("id") as string
+    const direction = formData.get("direction") as string
+    const currentOrder = parseInt(formData.get("currentOrder") as string)
+    
+    // Simple increment/decrement strategy
+    const newOrder = direction === "up" ? currentOrder - 1 : currentOrder + 1
+    
+    await prisma.material.update({
+      where: { id },
+      data: { order: newOrder }
+    })
+    
+    revalidatePath("/admin/materials")
+    revalidatePath("/materials")
   }
 
   return (
@@ -34,47 +56,20 @@ export default async function AdminMaterialsIndex() {
         </div>
       </div>
 
-      {materials.length === 0 ? (
-        <div className="text-center py-20 bg-[#FFFFFF] border border-neutral-200">
-           <p className="font-['DM_Mono'] text-xs uppercase tracking-widest text-[#52525B]">No active material profiles found.</p>
+      <div className="bg-[#FFFFFF] p-8 border border-neutral-200">
+        <div className="mb-8">
+          <h2 className="text-xl font-['Bebas_Neue'] tracking-widest text-[#09090B] mb-2">System Database</h2>
+          <p className="text-[#52525B] font-['Lora'] text-sm italic">Categorized material sorting interface.</p>
         </div>
-      ) : (
-        <div className="bg-[#FFFFFF] border border-neutral-200 overflow-hidden">
-          <table className="w-full text-left">
-            <thead className="bg-neutral-50 border-b border-neutral-200 font-['DM_Mono'] text-[10px] uppercase tracking-widest text-[#52525B]">
-              <tr>
-                <th className="px-6 py-4">Internal Name</th>
-                <th className="px-6 py-4">Taxonomy Route</th>
-                <th className="px-6 py-4">Visual Nodes</th>
-                <th className="px-6 py-4 text-right">Actions</th>
-              </tr>
-            </thead>
-            <tbody className="divide-y divide-neutral-200">
-              {materials.map(mat => (
-                <tr key={mat.id} className="hover:bg-neutral-50/50">
-                  <td className="px-6 py-4 font-['DM_Mono'] text-sm tracking-wide text-[#09090B] font-bold">
-                    {mat.name}
-                  </td>
-                  <td className="px-6 py-4 text-xs text-[#52525B]">
-                    {mat.parentCat ? mat.parentCat.name : "Uncategorized"}
-                  </td>
-                  <td className="px-6 py-4 text-xs text-[#10B981] font-bold">
-                    {mat.imageKeys.length} active
-                  </td>
-                  <td className="px-6 py-4 text-right">
-                    <form action={deleteMaterial}>
-                      <input type="hidden" name="id" value={mat.id} />
-                      <button type="submit" className="text-rose-500 hover:text-rose-700 text-[10px] font-['DM_Mono'] uppercase tracking-widest">
-                        Scrub Data
-                      </button>
-                    </form>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-      )}
+
+        {materials.length === 0 ? (
+          <div className="p-8 text-center text-[#52525B] font-['DM_Mono'] text-sm uppercase bg-[#FAFAFA] border border-neutral-200">
+            No materials found in the database.
+          </div>
+        ) : (
+          <MaterialListClient materials={materials} deleteMaterialAction={deleteMaterial} />
+        )}
+      </div>
     </div>
   )
 }

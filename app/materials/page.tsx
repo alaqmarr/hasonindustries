@@ -14,7 +14,10 @@ export const metadata: Metadata = {
 export default async function Materials() {
   const materials = await prisma.material.findMany({
     include: { parentCat: true },
-    orderBy: { createdAt: "desc" }
+    orderBy: [
+      { order: "asc" },
+      { createdAt: "desc" }
+    ]
   })
 
   // Group by category

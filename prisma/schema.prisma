@@ -17,6 +17,7 @@ model Product {
   specs       Json
   imageKeys   String[]
   featured    Boolean  @default(false)
+  order       Int      @default(0)
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
 }
@@ -49,6 +50,7 @@ model Material {
   description String?
   specs       Json?
   imageKeys   String[]
+  order       Int      @default(0)
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
 }

@@ -39,7 +39,10 @@ export default async function ProductCategoryPage({ params }: { params: Params }
             ? { categoryId: null }
             : { parentCat: { slug: categoryId } },
         include: { parentCat: true },
-        orderBy: { createdAt: 'desc' }
+        orderBy: [
+            { order: 'asc' },
+            { createdAt: 'desc' }
+        ]
     })
 
     const dbCategories = await prisma.productCategory.findMany({

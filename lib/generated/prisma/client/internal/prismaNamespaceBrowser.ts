@@ -88,6 +88,7 @@ export const ProductScalarFieldEnum = {
   specs: 'specs',
   imageKeys: 'imageKeys',
   featured: 'featured',
+  order: 'order',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 } as const
@@ -126,6 +127,7 @@ export const MaterialScalarFieldEnum = {
   description: 'description',
   specs: 'specs',
   imageKeys: 'imageKeys',
+  order: 'order',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 } as const
