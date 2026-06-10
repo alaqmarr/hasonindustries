@@ -6,8 +6,8 @@ import { ScrollTrigger } from "gsap/ScrollTrigger"
 
 const highlights = [
   "20,000 Sq Ft Controlled Environment",
-  "5-Axis CNC Milling Terminals",
-  "Automated Quality Control Scanning",
+  "3-Axis CNC Milling Terminals",
+  "Quality Control Scanning",
   "Thermal Treatment Zones",
 ]
 
@@ -54,19 +54,11 @@ export function FacilityHighlights() {
           </ul>
         </div>
 
-        {/* Image placeholder */}
+        {/* Image */}
         <div className="facility-image relative aspect-[4/3] bg-[#FAFAFA] border border-neutral-200 p-3 w-full">
-          <div className="w-full h-full bg-[#FFFFFF] flex flex-col items-center justify-center relative overflow-hidden group">
-            <div className="absolute inset-0 bg-[#10B981] opacity-0 group-hover:opacity-10 transition-opacity duration-700 mix-blend-overlay" />
-            <div className="w-24 h-24 sm:w-32 sm:h-32 border border-neutral-200 rounded-full flex items-center justify-center group-hover:scale-110 transition-transform duration-700">
-              <div className="w-12 h-12 sm:w-16 sm:h-16 border border-[#10B981] rounded-full animate-spin flex items-center justify-center"
-                style={{ animationDuration: "8s" }}>
-                <div className="w-2 h-2 bg-[#09090B] rounded-full" />
-              </div>
-            </div>
-            <p className="mt-6 text-[#52525B] font-['DM_Mono'] text-[9px] uppercase tracking-widest border border-neutral-200 px-4 py-2 bg-[#FAFAFA]">
-              Facility Image Coming Soon
-            </p>
+          <div className="w-full h-full bg-[#FFFFFF] relative overflow-hidden group">
+            <img src="/infra.png" alt="Infrastructure Capabilities" className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" />
+            <div className="absolute inset-0 bg-[#10B981] opacity-0 group-hover:opacity-10 transition-opacity duration-700 mix-blend-overlay pointer-events-none" />
           </div>
         </div>
 
