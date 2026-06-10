@@ -12,22 +12,14 @@ export default async function ProductsAdminPage() {
     ]
   })
 
-  async function updateOrder(formData: FormData) {
+  async function deleteProduct(formData: FormData) {
     "use server"
     const id = formData.get("id") as string
-    const direction = formData.get("direction") as string
-    const currentOrder = parseInt(formData.get("currentOrder") as string)
-    
-    // Simple increment/decrement strategy
-    const newOrder = direction === "up" ? currentOrder - 1 : currentOrder + 1
-    
-    await prisma.product.update({
-      where: { id },
-      data: { order: newOrder }
-    })
-    
-    revalidatePath("/admin/products")
-    revalidatePath("/products")
+    if (id) {
+      await prisma.product.delete({ where: { id } })
+      revalidatePath("/admin/products")
+      revalidatePath("/products")
+    }
   }
 
   return (
